@@ -10,6 +10,5 @@ public partial class Box : CsgBox3D
     {
         scriptEngine.InvokeEvent("tick");
         scriptEngine.Run();
-        
     }
 }

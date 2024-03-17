@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://ik0qnt4v8vvi"]
 
-[ext_resource type="Script" path="res://addons/miniscript-cs/examples/Box.cs" id="3_ibhjx"]
+[ext_resource type="Script" path="res://addons/miniscript-cs/examples/BoxTick.cs" id="3_ibhjx"]
 [ext_resource type="Script" path="res://addons/miniscript-cs/src/ScriptEngine.cs" id="4_2su3e"]
 [ext_resource type="PackedScene" uid="uid://cdlsreb0kqaj" path="res://addons/miniscript-cs/examples/CodeEditor.tscn" id="5_bt8vk"]
 
