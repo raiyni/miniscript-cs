@@ -1,0 +1,51 @@
+[gd_scene load_steps=7 format=3 uid="uid://c10y1hrboajm4"]
+
+[ext_resource type="Script" path="res://addons/miniscript-cs/src/ScriptEngine.cs" id="3_b7whk"]
+[ext_resource type="PackedScene" uid="uid://cdlsreb0kqaj" path="res://addons/miniscript-cs/examples/CodeEditor.tscn" id="6_53vp4"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_tm7vy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_prov6"]
+albedo_color = Color(0.552956, 0.552956, 0.552955, 1)
+uv1_scale = Vector3(0.25, 0.25, 0.25)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_hkqsv"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2jm4h"]
+albedo_color = Color(1, 0.305882, 1, 1)
+
+[node name="SingleRun" type="Node3D"]
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
+mesh = SubResource("PlaneMesh_tm7vy")
+surface_material_override/0 = SubResource("StandardMaterial3D_prov6")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_hkqsv")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -11.118, 1.567, 2.383)
+material_override = SubResource("StandardMaterial3D_2jm4h")
+use_collision = true
+
+[node name="ScriptEngine" type="Node" parent="CSGBox3D"]
+script = ExtResource("3_b7whk")
+Script = "print(getPos())"
+
+[node name="OmniLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.0271365, 0.999632, 0, -0.999632, 0.0271365, 0, 29.7302, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.753288, 0.657691, 0, -0.657691, 0.753288, 0, 33.0229, 31.3313)
+
+[node name="CodeEditor" parent="." node_paths=PackedStringArray("scriptEngine", "codeEdit", "compileButton", "runButton") instance=ExtResource("6_53vp4")]
+scriptEngine = NodePath("../CSGBox3D/ScriptEngine")
+codeEdit = NodePath("Control/VSplitContainer/CodeEdit")
+compileButton = NodePath("Control/VSplitContainer/HBoxContainer/Compile")
+runButton = NodePath("Control/VSplitContainer/HBoxContainer/Run")

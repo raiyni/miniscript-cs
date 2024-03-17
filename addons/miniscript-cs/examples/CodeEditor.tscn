@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=3 uid="uid://cdlsreb0kqaj"]
+
+[ext_resource type="Script" path="res://addons/miniscript-cs/examples/CodeEditor.cs" id="1_op4gw"]
+
+[sub_resource type="SystemFont" id="SystemFont_6bq0b"]
+subpixel_positioning = 0
+
+[node name="CodeEditor" type="CanvasLayer" node_paths=PackedStringArray("codeEdit", "compileButton", "runButton")]
+script = ExtResource("1_op4gw")
+codeEdit = NodePath("Control/VSplitContainer/CodeEdit")
+compileButton = NodePath("Control/VSplitContainer/HBoxContainer/Compile")
+runButton = NodePath("Control/VSplitContainer/HBoxContainer/Run")
+
+[node name="Control" type="Control" parent="."]
+auto_translate_mode = 1
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1150.0
+offset_bottom = 648.0
+
+[node name="VSplitContainer" type="VSplitContainer" parent="Control"]
+auto_translate_mode = 1
+layout_mode = 0
+offset_right = 443.0
+offset_bottom = 288.0
+focus_mode = 1
+split_offset = 493
+
+[node name="CodeEdit" type="CodeEdit" parent="Control/VSplitContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+theme_override_fonts/font = SubResource("SystemFont_6bq0b")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/VSplitContainer"]
+auto_translate_mode = 1
+layout_direction = 3
+layout_mode = 2
+
+[node name="Compile" type="Button" parent="Control/VSplitContainer/HBoxContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+action_mode = 0
+text = "Compile"
+
+[node name="Run" type="Button" parent="Control/VSplitContainer/HBoxContainer"]
+auto_translate_mode = 1
+layout_mode = 2
+action_mode = 0
+text = "Run"
