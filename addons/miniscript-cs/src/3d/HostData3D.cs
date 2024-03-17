@@ -34,9 +34,4 @@ public class HostData3D : HostData
 
         return Intrinsic.Result.True;
     }
-
-    public override Intrinsic.Result GetPos(TAC.Context context)
-    {
-        return new Intrinsic.Result(new Vec3(self.Position));
-    }
 }

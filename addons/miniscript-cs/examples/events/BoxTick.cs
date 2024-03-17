@@ -8,7 +8,7 @@ public partial class Box : CsgBox3D
 
     public override void _PhysicsProcess(double delta)
     {
-        scriptEngine.InvokeEvent("tick");
+        scriptEngine.Publish("tick");
         scriptEngine.Run();
     }
 }

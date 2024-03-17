@@ -15,7 +15,7 @@ public partial class ScriptEngine : Node
     [Export] public Node parent;
     [Export] public bool compileOnSet = true;
 
-    [Export] public float maxExecutionTime = 0.01f;
+    [Export] public float maxExecutionTime = 0.02f;
 
     [Export(PropertyHint.Dir)]
     public string additionalLibraries { get; set; }
@@ -112,12 +112,20 @@ public partial class ScriptEngine : Node
 
     public virtual void Run()
     {
-        interpreter.RunUntilDone(maxExecutionTime);
+        while (!interpreter.done)
+        {
+            interpreter.RunUntilDone(maxExecutionTime);
+        }
     }
 
     public virtual void Restart()
     {
         interpreter.Restart();
+    }
+
+    public virtual void Stop()
+    {
+        interpreter.Stop();
     }
 
     protected virtual void OnStdOut(string s, bool eol)
@@ -138,7 +146,7 @@ public partial class ScriptEngine : Node
         return new HostData(parent, this);
     }
 
-    public virtual void InvokeEvent(string functionName, ValMap args = null)
+    public virtual void Publish(string functionName, ValMap args = null)
     {
         if (interpreter == null || !interpreter.Running()) return;
 
