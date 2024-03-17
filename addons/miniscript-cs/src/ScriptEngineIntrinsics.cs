@@ -3,17 +3,24 @@ using Godot;
 namespace Miniscript;
 public partial class ScriptEngine : Node
 {
-    static ValMap vec3Type;
+    static ValMap nodeType;
 
-    public static ValMap Vec3Type()
+    public static ValMap NodeType()
     {
-        if (vec3Type != null) return vec3Type;
+        if (nodeType != null) return nodeType;
 
-        vec3Type = new ValMap();
-        vec3Type["test"] = Intrinsic.GetByName("test").GetFunc();
-        return vec3Type;
+        nodeType = new ValMap();
+
+        Intrinsic f = Intrinsic.Create("");
+        f.code = (context, partialResult) =>
+        {
+            var data = context.interpreter.hostData as HostData;
+            return new Intrinsic.Result(new ValString(data.Node.Name));
+        };
+        nodeType["name"] = f.GetFunc();
+
+        return nodeType;
     }
-
     static void AddIntrinsics()
     {
         if (intrinsicsAdded) return;
@@ -21,7 +28,7 @@ public partial class ScriptEngine : Node
 
         AddMovementIntrinsics();
         AddVector3Intrinsics();
-        // Intrinsics.ListType()["test"] = Intrinsic.GetByName("test").GetFunc();
+        AddNodeIntrinsics();
     }
 
     static void AddMovementIntrinsics()
@@ -44,34 +51,13 @@ public partial class ScriptEngine : Node
         };
     }
 
-    static void AddEventIntrinsics()
+    static void AddNodeIntrinsics()
     {
-
-    }
-    
-
-    static void AddVector3Intrinsics()
-    {
-        Intrinsic f = Intrinsic.Create("test");
-        f.AddParam("self");
-        f.AddParam("idx");
-        f.code = (context, partialResult) => 
-        {
-			Value self = context.self;
-            Value idx = context.GetLocal("idx"); 
-
-            GD.Print(self?.GetType(), idx);
-            return Intrinsic.Result.True;
-        };
-
-        f = Intrinsic.Create("vec3");
+        Intrinsic f = Intrinsic.Create("node");
         f.code = (context, partialResult) =>
         {
-            if (vec3Type == null)
-            {
-                vec3Type = Vec3Type().EvalCopy(context.vm.globalContext);
-            }
-            return new Intrinsic.Result(vec3Type);
-        };      
+            HostData sh = context.interpreter.hostData as HostData;
+            return new Intrinsic.Result(NodeType());
+        };
     }
 }

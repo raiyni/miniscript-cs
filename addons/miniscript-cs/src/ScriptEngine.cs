@@ -47,8 +47,9 @@ public partial class ScriptEngine : Node
         AddIntrinsics();
 
         parent ??= GetParent();
-
         hostData = createDataObject();
+
+        GD.Print(parent);
         SetupInterpreter();
     }
 

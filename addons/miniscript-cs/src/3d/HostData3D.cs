@@ -4,20 +4,17 @@ namespace Miniscript;
 
 public class HostData3D : HostData
 {
-    new public Node3D Node { get; }
-    new public ScriptEngine Engine { get; }
-
-    public HostData3D(Node n, ScriptEngine e)
+    private readonly Node3D self;
+    public HostData3D(Node n, ScriptEngine e) : base((Node3D)n, e)
     {
-        Node = (Node3D)n;
-        Engine = e;
+        self = (Node3D)n;
     }
 
     public override Intrinsic.Result Move(TAC.Context context)
     {
         if (Engine.allowMoving)
         {
-            var vec = Node.Position;
+            var vec = self.Position;
             vec.X = (float)context.GetVar("x").DoubleValue();
 
             var z = context.GetVar("z");
@@ -32,7 +29,7 @@ public class HostData3D : HostData
             }
 
 
-            Node.Position = vec;
+            self.Position = vec;
         }
 
         return Intrinsic.Result.True;
@@ -40,6 +37,6 @@ public class HostData3D : HostData
 
     public override Intrinsic.Result GetPos(TAC.Context context)
     {
-        return new Intrinsic.Result(new Vec3(Node.Position));
+        return new Intrinsic.Result(new Vec3(self.Position));
     }
 }

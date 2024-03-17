@@ -4,24 +4,21 @@ namespace Miniscript;
 
 public class HostData2D : HostData
 {
-    new public Node2D Node { get; }
-    new public ScriptEngine Engine { get; }
-
-    public HostData2D(Node n, ScriptEngine e)
+    private readonly Node2D self;
+    public HostData2D(Node n, ScriptEngine e) : base((Node2D)n, e)
     {
-        Node = (Node2D)n;
-        Engine = e;
+        self = (Node2D)n;
     }
 
     public override Intrinsic.Result Move(TAC.Context context)
     {
         if (Engine.allowMoving)
         {
-            var vec = Node.Position;
+            var vec = self.Position;
             vec.X = (float)context.GetVar("x").DoubleValue();
             vec.Y = (float)context.GetVar("y").DoubleValue();
 
-            Node.Position = vec;
+            self.Position = vec;
         }
         
         return Intrinsic.Result.True;
