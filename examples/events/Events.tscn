@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://ik0qnt4v8vvi"]
 
+[ext_resource type="Script" path="res://examples/events/S2.cs" id="2_yeotn"]
 [ext_resource type="Script" path="res://examples/events/BoxTick.cs" id="3_ibhjx"]
-[ext_resource type="Script" path="res://addons/miniscript-cs/src/ScriptEngine.cs" id="4_2su3e"]
 [ext_resource type="PackedScene" uid="uid://cdlsreb0kqaj" path="res://examples/CodeEditor.tscn" id="5_bt8vk"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_tm7vy"]
@@ -37,13 +37,12 @@ script = ExtResource("3_ibhjx")
 scriptEngine = NodePath("ScriptEngine")
 
 [node name="ScriptEngine" type="Node" parent="CSGBox3D"]
-script = ExtResource("4_2su3e")
+script = ExtResource("2_yeotn")
 additionalLibraries = "res://examples/events/lib"
-Script = "// press run to start polling
-// can override library functions here too
-// echo = f10 to print this
-// tick = print every 30 physics ticks
-// click = print on mouse click
+Script = "// events can be overriden
+// tick = print every 30th  tick
+// click = move box where clicked
+// echo = print this on f10
 
 pollEvents"
 

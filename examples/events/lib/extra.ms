@@ -5,7 +5,8 @@ tick = function (args)
 end function
 
 click = function (args)
-    print "clicked"
+    print "moving to " + args.pos
+    move(args.pos.x, args.pos.y,  args.pos.z)
 end function
 
 echo = function (args)

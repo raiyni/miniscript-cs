@@ -12,14 +12,4 @@ public class HostData
         Node = n;
         Engine = e;
     }
-
-    public virtual Intrinsic.Result Move(TAC.Context context)
-    {
-        return Intrinsic.Result.True;
-    }
-
-    public virtual Intrinsic.Result GetPos(TAC.Context context)
-    {
-        return Intrinsic.Result.True;
-    }
 }

@@ -1,7 +1,9 @@
+using Miniscript.example.vector;
+
 namespace Miniscript.example.events;
 public static class EventsIntrinsics
 {
-    [Discover]    
+    [Discover]
     static void AddMovementIntrinsics()
     {
         Intrinsic f = Intrinsic.Create("move");
@@ -10,15 +12,36 @@ public static class EventsIntrinsics
         f.AddParam("z", ValNull.instance);
         f.code = (context, partialResult) =>
         {
-            var data = context.interpreter.hostData as HostData;
-            return data.Move(context);
+            var data = context.interpreter.hostData as HostData3D;
+            var engine = (S2)data.Engine;
+            if (engine.allowMoving)
+            {
+                var vec = data.Node.Position;
+                vec.X = (float)context.GetVar("x").DoubleValue();
+
+                var z = context.GetVar("z");
+                if (z is ValNull)
+                {
+                    vec.Z = (float)context.GetVar("y").DoubleValue();
+                }
+                else
+                {
+                    vec.Y = (float)context.GetVar("y").DoubleValue();
+                    vec.Z = (float)context.GetVar("z").DoubleValue();
+                }
+
+
+                data.Node.Position = vec;
+            }
+
+            return Intrinsic.Result.True;
         };
 
         f = Intrinsic.Create("getPos");
         f.code = (context, partialResult) =>
         {
-            var data = context.interpreter.hostData as HostData;
-            return data.GetPos(context);
+            var data = context.interpreter.hostData as HostData3D;
+            return new Intrinsic.Result(new Vec3(data.Node.Position));
         };
     }
 }

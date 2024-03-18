@@ -38,9 +38,6 @@ public partial class ScriptEngine : Node
         }
     }
 
-    [ExportGroup("Features")]
-    [Export] public bool allowMoving = true;
-
     protected Interpreter interpreter;
     protected HostData hostData;
 

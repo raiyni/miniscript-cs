@@ -1,5 +1,7 @@
 using Godot;
+using Godot.Collections;
 using Miniscript;
+using Miniscript.example.vector;
 using System;
 
 namespace Miniscript.example.events;
@@ -8,16 +10,12 @@ public partial class BoxTick : CsgBox3D
 {
     [Export] public ScriptEngine scriptEngine;
 
+    [Export] public float rayLength = 1000f;
+
     int ticks = 0;
 
     public override void _PhysicsProcess(double delta)
     {
-
-        if (Input.IsActionJustPressed("mouse_1"))
-        {
-            scriptEngine.Publish("click");
-        }
-
         ticks++;
         var map = new ValMap();
         if (ticks % 30 == 0)
@@ -31,9 +29,7 @@ public partial class BoxTick : CsgBox3D
         }
 
         scriptEngine.Publish("tick", map);
-
-        if (scriptEngine.Running())
-            scriptEngine.Run();
+        scriptEngine.Run();
     }
 
     public override void _Input(InputEvent @event)
@@ -44,5 +40,26 @@ public partial class BoxTick : CsgBox3D
             map["msg"] = new ValString(scriptEngine.Script);
             scriptEngine.Publish("echo", map);
         }
+        else if (@event is InputEventMouseButton eventMouseButton && eventMouseButton.Pressed && eventMouseButton.ButtonIndex == MouseButton.Left)
+        {
+            var dict = shootRay(eventMouseButton);
+            if (dict.Count == 0) return;
+
+            var map = new ValMap();
+            map["pos"] = new Vec3((Vector3)dict["position"]);
+            scriptEngine.Publish("click", map);
+        }
+    }
+
+    private Dictionary shootRay(InputEventMouseButton eventMouseButton)
+    {
+        var spaceState = GetWorld3D().DirectSpaceState;
+        var camera3D = GetViewport().GetCamera3D();
+        var from = camera3D.ProjectRayOrigin(eventMouseButton.Position);
+        var to = from + camera3D.ProjectRayNormal(eventMouseButton.Position) * rayLength;
+        var query = PhysicsRayQueryParameters3D.Create(from, to);
+        var intersection = spaceState.IntersectRay(query);
+
+        return intersection;
     }
 }
