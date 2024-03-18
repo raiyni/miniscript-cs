@@ -59,8 +59,5 @@ transform = Transform3D(1, 0, 0, 0, 0.0271365, 0.999632, 0, -0.999632, 0.0271365
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.753288, 0.657691, 0, -0.657691, 0.753288, 0, 33.0229, 31.3313)
 
-[node name="CodeEditor" parent="." node_paths=PackedStringArray("scriptEngine", "codeEdit", "compileButton", "runButton") instance=ExtResource("3_ce6ou")]
+[node name="CodeEditor" parent="." node_paths=PackedStringArray("scriptEngine") instance=ExtResource("3_ce6ou")]
 scriptEngine = NodePath("../CSGBox3D/ScriptEngine")
-codeEdit = NodePath("Control/VSplitContainer/CodeEdit")
-compileButton = NodePath("Control/VSplitContainer/HBoxContainer/Compile")
-runButton = NodePath("Control/VSplitContainer/HBoxContainer/Run")
