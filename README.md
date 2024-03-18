@@ -1,6 +1,6 @@
 # MiniScript C# Integration
 
-This plugin provides an easy to use node for integration [MiniScript](https://miniscript.org/) into your project.
+This plugin provides an easy to use node for integrating [MiniScript](https://miniscript.org/) into your project.
 
 [Quick Reference guide](https://miniscript.org/files/MiniScript-QuickRef.pdf)
 
