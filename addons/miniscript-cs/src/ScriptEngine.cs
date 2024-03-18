@@ -109,6 +109,7 @@ public partial class ScriptEngine : Node
             string fileName = dir.GetNext();
             while (fileName != "")
             {
+                GD.Print($"ScriptEngine: found library {fileName}");
                 var content = FileAccess.GetFileAsString(path + fileName);
                 scripts.Add(content);
                 fileName = dir.GetNext();
