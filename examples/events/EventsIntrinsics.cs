@@ -12,11 +12,11 @@ public static class EventsIntrinsics
         f.AddParam("z", ValNull.instance);
         f.code = (context, partialResult) =>
         {
-            var data = context.interpreter.hostData as HostData3D;
+            var data = context.interpreter.hostData as HostData;
             var engine = (S2)data.Engine;
             if (engine.allowMoving)
             {
-                var vec = data.Node.Position;
+                var vec = data.Node3D.Position;
                 vec.X = (float)context.GetVar("x").DoubleValue();
 
                 var z = context.GetVar("z");
@@ -31,7 +31,7 @@ public static class EventsIntrinsics
                 }
 
 
-                data.Node.Position = vec;
+                data.Node3D.Position = vec;
             }
 
             return Intrinsic.Result.True;
@@ -40,8 +40,8 @@ public static class EventsIntrinsics
         f = Intrinsic.Create("getPos");
         f.code = (context, partialResult) =>
         {
-            var data = context.interpreter.hostData as HostData3D;
-            return new Intrinsic.Result(new Vec3(data.Node.Position));
+            var data = context.interpreter.hostData as HostData;
+            return new Intrinsic.Result(new Vec3(data.Node3D.Position));
         };
     }
 }

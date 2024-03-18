@@ -160,9 +160,6 @@ public partial class ScriptEngine : Node
 
     protected virtual HostData createDataObject()
     {
-        if (parent is Node3D) return new HostData3D(parent, this);
-        if (parent is Node2D) return new HostData2D(parent, this);
-
         return new HostData(parent, this);
     }
 
