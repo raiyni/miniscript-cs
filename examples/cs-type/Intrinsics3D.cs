@@ -1,9 +1,10 @@
 using Godot;
 
-namespace Miniscript;
+namespace Miniscript.example.vector;
 
-public partial class ScriptEngine : Node
+public static class Intrinsics3D
 {
+    [Discover]
     static void AddVector3Intrinsics()
     {
         Intrinsic f = Intrinsic.Create("length");
@@ -20,9 +21,15 @@ public partial class ScriptEngine : Node
         };
 
         f = Intrinsic.Create("vec3");
+        f.AddParam("x", 0);
+        f.AddParam("y", 0);
+        f.AddParam("z", 0);
         f.code = (context, partialResult) =>
         {
-            return new Intrinsic.Result(new Vec3(Vector3.Zero));
+            var x = context.GetLocal("x");
+            var y = context.GetLocal("y"); 
+            var z = context.GetLocal("z");
+            return new Intrinsic.Result(new Vec3(new Vector3(x.FloatValue(), y.FloatValue(), z.FloatValue())));
         };      
     }
 }

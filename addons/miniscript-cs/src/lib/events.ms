@@ -9,7 +9,3 @@ pollEvents = function ()
         yield
     end while
 end function
-
-onEnemyEntered = function (args)
-    return true
-end function

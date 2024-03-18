@@ -1,13 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://ik0qnt4v8vvi"]
+[gd_scene load_steps=7 format=3 uid="uid://bpwx3uxwjtad7"]
 
-[ext_resource type="Script" path="res://addons/miniscript-cs/examples/events/BoxTick.cs" id="3_ibhjx"]
-[ext_resource type="Script" path="res://addons/miniscript-cs/src/ScriptEngine.cs" id="4_2su3e"]
-[ext_resource type="PackedScene" uid="uid://cdlsreb0kqaj" path="res://addons/miniscript-cs/examples/CodeEditor.tscn" id="5_bt8vk"]
+[ext_resource type="Script" path="res://addons/miniscript-cs/src/ScriptEngine.cs" id="2_3y4a1"]
+[ext_resource type="PackedScene" uid="uid://cdlsreb0kqaj" path="res://examples/CodeEditor.tscn" id="3_ce6ou"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_tm7vy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_prov6"]
-albedo_color = Color(0.692601, 0.890988, 0.712284, 1)
+albedo_color = Color(0.552956, 0.552956, 0.552955, 1)
 uv1_scale = Vector3(0.25, 0.25, 0.25)
 uv1_triplanar = true
 uv1_world_triplanar = true
@@ -16,8 +15,9 @@ uv1_world_triplanar = true
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2jm4h"]
+albedo_color = Color(1, 0.305882, 1, 1)
 
-[node name="PhysicsProcess" type="Node3D"]
+[node name="AccessNode" type="Node3D"]
 
 [node name="Floor" type="MeshInstance3D" parent="."]
 transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
@@ -33,10 +33,25 @@ shape = SubResource("ConcavePolygonShape3D_hkqsv")
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -11.118, 1.567, 2.383)
 material_override = SubResource("StandardMaterial3D_2jm4h")
 use_collision = true
-script = ExtResource("3_ibhjx")
 
 [node name="ScriptEngine" type="Node" parent="CSGBox3D"]
-script = ExtResource("4_2su3e")
+script = ExtResource("2_3y4a1")
+Script = "v1 = vec3
+v2 = vec3(5, 9, -20)
+v1.x = 4
+v1[\"y\"] = 99
+
+print(\"v1: \" + v1)
+print(\"v2: \" + v2)
+
+print(\"v1 isa vec3 = \" +( v1 isa vec3))
+print(\"v2 isa vec3 = \" + (v2 isa vec3))
+print(\"v1 == v2 = \" + (v1 == v2))
+
+print(\"length of v1 is \" + length(v1))
+print(\"length of v2 is \" + length(v2))
+
+print(\"-----------------------------\")"
 
 [node name="OmniLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.0271365, 0.999632, 0, -0.999632, 0.0271365, 0, 29.7302, 0)
@@ -44,7 +59,7 @@ transform = Transform3D(1, 0, 0, 0, 0.0271365, 0.999632, 0, -0.999632, 0.0271365
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.753288, 0.657691, 0, -0.657691, 0.753288, 0, 33.0229, 31.3313)
 
-[node name="CodeEditor" parent="." node_paths=PackedStringArray("scriptEngine", "codeEdit", "compileButton", "runButton") instance=ExtResource("5_bt8vk")]
+[node name="CodeEditor" parent="." node_paths=PackedStringArray("scriptEngine", "codeEdit", "compileButton", "runButton") instance=ExtResource("3_ce6ou")]
 scriptEngine = NodePath("../CSGBox3D/ScriptEngine")
 codeEdit = NodePath("Control/VSplitContainer/CodeEdit")
 compileButton = NodePath("Control/VSplitContainer/HBoxContainer/Compile")

@@ -1,7 +1,9 @@
 using Godot;
 using System;
 
-public partial class BoxRun : CsgBox3D
+namespace Miniscript.example.access;
+
+public partial class FireableBox : CsgBox3D
 {
     [Export] public float fireRate { get; set; } = 0.2f;
 

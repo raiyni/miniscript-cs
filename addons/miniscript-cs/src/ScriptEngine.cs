@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using Godot;
 
 namespace Miniscript;
@@ -14,6 +15,8 @@ public partial class ScriptEngine : Node
     [ExportGroup("Settings")]
     [Export] public Node parent;
     [Export] public bool compileOnSet = true;
+
+    [Export] public bool discoverIntrinsics = true;
 
     [Export] public float maxExecutionTime = 0.02f;
 
@@ -41,15 +44,37 @@ public partial class ScriptEngine : Node
     protected Interpreter interpreter;
     protected HostData hostData;
 
+    public bool Running() => interpreter.Running(); 
+    public bool Done() => interpreter.done; 
+
+    static void AddIntrinsics(bool discover)
+    {
+        if (intrinsicsAdded) return;
+        intrinsicsAdded = true;
+
+        if (!discover) return;
+
+        var methods = AppDomain.CurrentDomain.GetAssemblies().ToList()
+            .SelectMany(x => x.GetTypes())
+            .Where(x => x.IsClass)
+            .SelectMany(x => x.GetMethods(BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Public))
+            .Where(x => x.GetCustomAttributes(typeof(Discover), false).FirstOrDefault() != null);
+
+        GD.Print($"Discovered methods: {methods.Count()}");
+        foreach (var m in methods)
+        {
+            m.Invoke(null, new object[]{});
+        }
+    }
+
     public override void _Ready()
     {
         LoadLibraries();
-        AddIntrinsics();
+        AddIntrinsics(discoverIntrinsics);
 
         parent ??= GetParent();
         hostData = createDataObject();
 
-        GD.Print(parent);
         SetupInterpreter();
     }
 
@@ -94,7 +119,7 @@ public partial class ScriptEngine : Node
         }
     }
 
-    protected virtual void SetupInterpreter()
+    public virtual void SetupInterpreter()
     {
         interpreter = new Interpreter();
         interpreter.hostData = hostData;
@@ -112,10 +137,7 @@ public partial class ScriptEngine : Node
 
     public virtual void Run()
     {
-        while (!interpreter.done)
-        {
-            interpreter.RunUntilDone(maxExecutionTime);
-        }
+        interpreter.RunUntilDone(maxExecutionTime);
     }
 
     public virtual void Restart()
@@ -146,12 +168,16 @@ public partial class ScriptEngine : Node
         return new HostData(parent, this);
     }
 
-    public virtual void Publish(string functionName, ValMap args = null)
+    public void Publish(string functionName, ValMap args = null)
     {
         if (interpreter == null || !interpreter.Running()) return;
 
         Value handler = interpreter.GetGlobalValue(functionName);
-        if (handler == null) return;
+        if (handler == null) 
+        {
+            GD.PrintErr($"ScriptEngine: {functionName} function does not exist");
+            return;
+        }
 
         var eventList = interpreter.GetGlobalValue("_events") as ValList;
         if (eventList == null)
@@ -165,5 +191,14 @@ public partial class ScriptEngine : Node
         newEvent["args"] = args ?? new ValMap();
 
         eventList.values.Add(newEvent);
+    }
+
+    public void ClearEvents()
+    {
+        var eventList = interpreter.GetGlobalValue("_events") as ValList;
+        if (eventList != null)
+        {
+            eventList.values.Clear();
+        }
     }
 }

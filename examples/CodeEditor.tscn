@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cdlsreb0kqaj"]
 
-[ext_resource type="Script" path="res://addons/miniscript-cs/examples/CodeEditor.cs" id="1_op4gw"]
+[ext_resource type="Script" path="res://examples/CodeEditor.cs" id="1_op4gw"]
 
 [sub_resource type="SystemFont" id="SystemFont_6bq0b"]
 subpixel_positioning = 0

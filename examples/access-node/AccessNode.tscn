@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://c10y1hrboajm4"]
 
-[ext_resource type="Script" path="res://addons/miniscript-cs/examples/access-node/FireableBox.cs" id="1_hpoqb"]
+[ext_resource type="Script" path="res://examples/access-node/FireableBox.cs" id="1_hpoqb"]
 [ext_resource type="Script" path="res://addons/miniscript-cs/src/ScriptEngine.cs" id="3_b7whk"]
-[ext_resource type="PackedScene" uid="uid://cdlsreb0kqaj" path="res://addons/miniscript-cs/examples/CodeEditor.tscn" id="6_53vp4"]
+[ext_resource type="PackedScene" uid="uid://cdlsreb0kqaj" path="res://examples/CodeEditor.tscn" id="6_53vp4"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_tm7vy"]
 

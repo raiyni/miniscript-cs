@@ -1,7 +1,7 @@
 
 using Godot;
 
-namespace Miniscript;
+namespace Miniscript.example.vector;
 
 public class Vec3 : ValMap
 {
