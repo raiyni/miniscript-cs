@@ -1,0 +1,81 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmvxkymmlrym1"]
+
+[ext_resource type="Script" path="res://addons/miniscript-cs/src/ScriptEngine.cs" id="1_8a7a1"]
+[ext_resource type="Script" path="res://examples/CodeEditor.cs" id="2_e7i3e"]
+[ext_resource type="PackedScene" uid="uid://c7o27lhmm6bka" path="res://addons/miniscript-cs/src/editor/MiniscriptEditor.tscn" id="3_t316o"]
+
+[node name="SyntaxHighlighting" type="CanvasLayer" node_paths=PackedStringArray("scriptEngine", "codeEdit", "compileButton", "runButton")]
+script = ExtResource("2_e7i3e")
+scriptEngine = NodePath("ScriptEngine")
+codeEdit = NodePath("VBoxContainer/MiniscriptEditor")
+compileButton = NodePath("VBoxContainer/HBoxContainer/Compile")
+runButton = NodePath("VBoxContainer/HBoxContainer/Run")
+
+[node name="ScriptEngine" type="Node" parent="."]
+script = ExtResource("1_8a7a1")
+Script = "// this is a comment
+
+_events = []
+
+pollEvents = function ()
+    while true
+        while _events.len > 0
+            _nextEvent = _events.pull()
+            _nextEvent.invoke(_nextEvent.args)
+        end while
+        yield
+    end while
+end function
+
+
+v = function() // some comments
+	q = {\"2\": 4}
+	q[0] = 4
+
+	return 77 * 3
+end function
+
+tick = function (args)
+    t = 4
+    if args.pass == true then
+        print \"tick\"
+    end if
+end function
+
+click = function (args)
+    print \"moving to \" + args.pos
+    move(args.pos.x, args.pos.y,  args.pos.z)
+end function
+
+echo = function (args)
+    print args.msg
+    locals
+    globals
+    time
+    wait 4
+    yield
+end function"
+
+[node name="VBoxContainer" type="VSplitContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = 593
+
+[node name="MiniscriptEditor" parent="VBoxContainer" instance=ExtResource("3_t316o")]
+layout_mode = 2
+text = ""
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_direction = 3
+layout_mode = 2
+
+[node name="Compile" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Compile"
+
+[node name="Run" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Run"

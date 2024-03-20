@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://c7o27lhmm6bka"]
+
+[ext_resource type="FontFile" uid="uid://d05pwffc0npdn" path="res://examples/FiraCodeNerdFontMono-Regular.ttf" id="1_3sfth"]
+[ext_resource type="CodeHighlighter" uid="uid://crfmt2g6nndsp" path="res://addons/miniscript-cs/src/editor/MiniscriptHighlighter.tres" id="2_m0ugp"]
+
+[sub_resource type="FontVariation" id="FontVariation_rm0e2"]
+base_font = ExtResource("1_3sfth")
+
+[node name="CodeEdit" type="CodeEdit"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = SubResource("FontVariation_rm0e2")
+theme_override_font_sizes/font_size = 12
+caret_blink = true
+syntax_highlighter = ExtResource("2_m0ugp")
+highlight_current_line = true
+gutters_draw_line_numbers = true
+indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
