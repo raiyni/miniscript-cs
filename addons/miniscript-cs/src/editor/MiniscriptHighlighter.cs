@@ -477,11 +477,14 @@ public partial class MiniscriptHighlighter : CodeHighlighter
             {
                 prev_color = color;
                 highlighter_info["color"] = color;
-                color_map[j] = highlighter_info;
 
                 if (is_a_eq && prev_char == '=')
                 {
-                    color_map[j-1] = highlighter_info;
+                    color_map[j - 1] = highlighter_info;
+                }
+                else
+                {
+                    color_map[j] = highlighter_info;
                 }
             }
         }
@@ -522,18 +525,18 @@ public partial class MiniscriptHighlighter : CodeHighlighter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static bool is_bracket(char p_char)
     {
-        return p_char == '[' || p_char == ']' || p_char == '(' || p_char == ')' || p_char == '{' || p_char == '}' ;
+        return p_char == '[' || p_char == ']' || p_char == '(' || p_char == ')' || p_char == '{' || p_char == '}';
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static bool is_op(char p_char)
     {
-        return p_char == '+' || p_char == '-' || p_char == '*' || p_char == '/' || p_char == '%' || p_char == '^' || p_char == '!' || p_char == '<' || p_char == '>'; 
+        return p_char == '+' || p_char == '-' || p_char == '*' || p_char == '/' || p_char == '%' || p_char == '^' || p_char == '!' || p_char == '<' || p_char == '>';
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static bool is_eq(char p_char)
     {
-        return p_char == '='; 
+        return p_char == '=';
     }
 }
