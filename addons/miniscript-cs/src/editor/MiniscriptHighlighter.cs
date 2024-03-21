@@ -40,14 +40,16 @@ public partial class MiniscriptHighlighter : CodeHighlighter
     private static List<string> TOKENS = new List<string>()
     {
         "function", "while", "end", "if", "for", "then",
-        "new", "else", "break", "continue"
+        "new", "else", "break", "continue", "and", "or", "not"
     };
 
     [Export] public Color TokenColor = Colors.Salmon;
     [Export] public Color IntrinsicsColor = Colors.PaleGreen;
     [Export] public Color VariablesColor = Colors.DodgerBlue.Lightened(0.35f);
     [Export] public Color CommentColor = Colors.Gray.Darkened(0.25f);
-    [Export] public Color StringColor = Colors.Gold.Lightened(0.3f);
+    [Export] public Color StringColor = Color.FromString("#eee8aa", Colors.Gold.Lightened(0.4f));
+    [Export] public Color BracketColor = Colors.Gold;
+    [Export] public Color OpColor = Colors.Salmon;
 
     Dictionary<int, int> colorRegionCache = new Dictionary<int, int>();
     Dictionary<string, Color> memberKeywordColors = new Dictionary<string, Color>();
@@ -131,6 +133,8 @@ public partial class MiniscriptHighlighter : CodeHighlighter
             bool is_char = !is_symbol(str[j]);
             bool is_a_symbol = is_symbol(str[j]);
             bool is_number = is_digit(str[j]);
+            bool is_a_bracket = is_a_symbol ? is_bracket(str[j]) : false;
+            bool is_a_op = is_a_symbol ? is_op(str[j]) : false;
 
             /* color regions */
             if (is_a_symbol || in_region != -1)
@@ -439,6 +443,14 @@ public partial class MiniscriptHighlighter : CodeHighlighter
             {
                 color = FunctionColor;
             }
+            else if (is_a_bracket)
+            {
+                color = BracketColor;
+            }
+            else if (is_a_op)
+            {
+                color = OpColor;
+            }
             else if (is_a_symbol)
             {
                 color = SymbolColor;
@@ -489,6 +501,18 @@ public partial class MiniscriptHighlighter : CodeHighlighter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static bool is_underscore(char p_char)
     {
-        return (p_char == '_');
+        return p_char == '_';
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    static bool is_bracket(char p_char)
+    {
+        return p_char == '[' || p_char == ']' || p_char == '(' || p_char == ')' || p_char == '{' || p_char == '}' ;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    static bool is_op(char p_char)
+    {
+        return p_char == '+' || p_char == '-' || p_char == '*' || p_char == '/' || p_char == '%' || p_char == '^' ;
     }
 }
