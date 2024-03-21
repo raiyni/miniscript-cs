@@ -78,6 +78,11 @@ public partial class MiniscriptHighlighter : CodeHighlighter
         colorRegionCache.Clear();
     }
 
+    // public new void AddColorRegion(string start, string end, Color color, bool endLine = false)
+    // {
+
+    // }
+
     // Translated directly from https://github.com/godotengine/godot/blob/fe01776f05b1787b28b4a270d53037a3c25f4ca2/scene/resources/syntax_highlighter.cpp#L119
     public override Godot.Collections.Dictionary _GetLineSyntaxHighlighting(int p_line)
     {
@@ -128,13 +133,14 @@ public partial class MiniscriptHighlighter : CodeHighlighter
         {
             Godot.Collections.Dictionary highlighter_info = new Godot.Collections.Dictionary();
 
-
+            char prev_char = j > 0 ? str[j - 1] : 'z';
             color = font_color;
             bool is_char = !is_symbol(str[j]);
             bool is_a_symbol = is_symbol(str[j]);
             bool is_number = is_digit(str[j]);
             bool is_a_bracket = is_a_symbol ? is_bracket(str[j]) : false;
             bool is_a_op = is_a_symbol ? is_op(str[j]) : false;
+            bool is_a_eq = is_a_symbol ? is_eq(str[j]) : false;
 
             /* color regions */
             if (is_a_symbol || in_region != -1)
@@ -361,7 +367,7 @@ public partial class MiniscriptHighlighter : CodeHighlighter
                     to++;
                 }
 
-                String word = str[j..to];
+                string word = str[j..to];
                 Color col = new Color();
                 if (keywordColors.ContainsKey(word))
                 {
@@ -447,6 +453,10 @@ public partial class MiniscriptHighlighter : CodeHighlighter
             {
                 color = BracketColor;
             }
+            else if (is_a_eq && (is_op(prev_char) || prev_char == '='))
+            {
+                color = OpColor;
+            }
             else if (is_a_op)
             {
                 color = OpColor;
@@ -468,6 +478,11 @@ public partial class MiniscriptHighlighter : CodeHighlighter
                 prev_color = color;
                 highlighter_info["color"] = color;
                 color_map[j] = highlighter_info;
+
+                if (is_a_eq && prev_char == '=')
+                {
+                    color_map[j-1] = highlighter_info;
+                }
             }
         }
 
@@ -513,6 +528,12 @@ public partial class MiniscriptHighlighter : CodeHighlighter
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     static bool is_op(char p_char)
     {
-        return p_char == '+' || p_char == '-' || p_char == '*' || p_char == '/' || p_char == '%' || p_char == '^' ;
+        return p_char == '+' || p_char == '-' || p_char == '*' || p_char == '/' || p_char == '%' || p_char == '^' || p_char == '!' || p_char == '<' || p_char == '>'; 
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    static bool is_eq(char p_char)
+    {
+        return p_char == '='; 
     }
 }
