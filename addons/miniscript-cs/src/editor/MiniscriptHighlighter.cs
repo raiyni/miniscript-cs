@@ -34,7 +34,7 @@ public partial class MiniscriptHighlighter : CodeHighlighter
 
     private static List<string> VARIABLES = new List<string>()
     {
-        "true", "false", "locals", "globals"
+        "true", "false", "locals", "globals", "null"
     };
 
     private static List<string> TOKENS = new List<string>()
