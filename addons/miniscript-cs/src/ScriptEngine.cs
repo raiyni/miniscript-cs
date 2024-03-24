@@ -44,6 +44,8 @@ public partial class ScriptEngine : Node
     public bool Running() => interpreter.Running(); 
     public bool Done() => interpreter.done; 
 
+    public List<string> Errors { get; } = new List<string>();
+
     static void AddIntrinsics(bool discover)
     {
         if (intrinsicsAdded) return;
@@ -155,6 +157,7 @@ public partial class ScriptEngine : Node
 
     protected virtual void onErrOut(string s, bool eol)
     {
+        Errors.Add(s);
         GD.PrintErr(s);
     }
 
